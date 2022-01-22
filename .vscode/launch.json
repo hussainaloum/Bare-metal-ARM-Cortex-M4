@@ -1,0 +1,26 @@
+{
+    // Use IntelliSense to learn about possible attributes.
+    // Hover to view descriptions of existing attributes.
+    // For more information, visit: https://go.microsoft.com/fwlink/?linkid=830387
+    "version": "0.2.0",
+    "configurations": [
+        {
+            "cwd": "${workspaceRoot}",
+            "executable": "final.elf",
+            "name": "Debug Microcontroller",
+            "request": "launch",
+            "type": "cortex-debug",
+            "showDevDebugOutput": "none",
+            "serverpath": "C:/Program Files/SEGGER/JLink/JLinkGDBServerCL.exe",
+            "servertype": "jlink",
+            "interface": "swd",
+            "device": "nRF52833_xxAA",
+            "runToMain": true,
+            "postLaunchCommands": [                
+                "mon semihosting enable",               //eanble semihosting
+                "mon semihosting ioclient 3"            //push output to GDB client
+            ],
+            "svdFile": "C:\\Users\\Hussain Aloum\\Documents\\nRF52833_2\\nRF52833.svd"
+        }
+    ]
+}
