@@ -61,13 +61,11 @@ void GPIO_WriteToOutputPin(GPIO_Handle_t *GPIOHandle, uint8_t PinNumber, uint8_t
 {
     if(Value == 1)
     {
-        GPIOHandle->pGPIOPx->PIN_CNF[PinNumber] |= (GPIO_DRIVE_S0H1 << GPIO_PIN_CNF_DRIVE_BIT_POS);
+        GPIOHandle->pGPIOPx->OUTSET |= (0x01 << PinNumber);
     }
     else
     {
-        // GPIOHandle->pGPIOPx->PIN_CNF[PinNumber] &= ~(0x01 << GPIO_PIN_CNF_DRIVE_BIT_POS);
-        GPIOHandle->pGPIOPx->PIN_CNF[PinNumber] |= (GPIO_DRIVE_D0S1 << GPIO_PIN_CNF_DRIVE_BIT_POS);
-        //GPIOHandle->pGPIOPx->OUTCLR |= (0x01 << PinNumber);
+        GPIOHandle->pGPIOPx->OUTCLR &= (0x01 << PinNumber);
     }
 }
 

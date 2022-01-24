@@ -123,4 +123,3 @@ typedef struct
 #define GPIO_PIN_CNF_SENSE_BIT_POS          16
 
 #endif  /* NRF52833_H */
-/* GPIO PIN_CNF[] */

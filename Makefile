@@ -5,7 +5,7 @@
 
 CXX= /doc/gcc-arm-none-eabi-10.3-2021.10/bin/arm-none-eabi-g++
 MACH=cortex-m4
-CXXFLAGS= -c -g -mcpu=$(MACH) -mthumb -mfloat-abi=soft -std=gnu++11 -Wall -O0
+CXXFLAGS= -c -I drivers/inc -g -mcpu=$(MACH) -mthumb -mfloat-abi=soft -std=gnu++11 -Wall -O0
 LDFLAGS= -mcpu=$(MACH) -mthumb -mfloat-abi=soft --specs=nano.specs -T nRF52833_ls.ld -Wl,-Map=final.map
 LDFLAGS_SH= -mcpu=$(MACH) -mthumb -mfloat-abi=soft --specs=rdimon.specs -T nRF52833_ls.ld -Wl,-Map=final.map
 #In CFLAGS:
@@ -27,11 +27,12 @@ LDFLAGS_SH= -mcpu=$(MACH) -mthumb -mfloat-abi=soft --specs=rdimon.specs -T nRF52
 #In LDFLAGS_SH:
 #	rdimon.specs is passed when using system calls, and here semihosting was used
 
+#Makefile rules are below
 all:main.o nRF52833_startup.o syscalls.o nRF52833_gpio_driver.o final.elf
 
 semihosting:main.o nRF52833_startup.o syscalls.o final_sh.elf
 
-main.o:main.cpp
+main.o:src/main.cpp
 	$(CXX) $(CXXFLAGS) -o $@ $^
 
 nRF52833_startup.o:nRF52833_startup.cpp
@@ -40,7 +41,7 @@ nRF52833_startup.o:nRF52833_startup.cpp
 syscalls.o:syscalls.cpp
 	$(CXX) $(CXXFLAGS) -o $@ $^
 
-nRF52833_gpio_driver.o:nRF52833_gpio_driver.cpp
+nRF52833_gpio_driver.o:drivers/src/nRF52833_gpio_driver.cpp
 	$(CXX) $(CXXFLAGS) -o $@ $^
 	
 final.elf: main.o nRF52833_startup.o syscalls.o nRF52833_gpio_driver.o
