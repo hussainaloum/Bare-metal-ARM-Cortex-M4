@@ -135,6 +135,7 @@ void LFXO_Init()
 *************************************************************/
 void HFXO_Init()
 {
+	CLOCK_RegDef_t *pClock = CLOCK;
 	//HFXO is started by triggering the HFCLKSTART task
 	pClock->TASKS_HFCLKSTART = 0x01;
 	//HFCLKSTARTED event is generated once the HFXO startup time has elapsed
