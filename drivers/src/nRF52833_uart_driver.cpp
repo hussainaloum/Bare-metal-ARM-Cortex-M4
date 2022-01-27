@@ -124,3 +124,19 @@ void LFXO_Init()
 	//3- wait for the LFCLKSTARTED event flag
 	while(!(pClock->EVENTS_LFCLKSTARTED & 0x01));
 }
+
+/*************************************************************
+ * @name		HFXO_Init
+ * @brief		Initialize and start the high frequency external clock
+ * @inputs		None    
+ *
+ * @return		None
+ * @Note		None
+*************************************************************/
+void HFXO_Init()
+{
+	//HFXO is started by triggering the HFCLKSTART task
+	pClock->TASKS_HFCLKSTART = 0x01;
+	//HFCLKSTARTED event is generated once the HFXO startup time has elapsed
+	while(pClock->EVENTS_HFCLKSTARTED == UART_EV_NGENERATED);
+}

@@ -36,8 +36,9 @@ void UART_Init(UART_Handle_t *pUARTHandle);
 /* UART send data function */
 void UART_SendData(UART_Handle_t *pUARTHandle, uint8_t *pData, uint32_t Length);
 
-/* LFCLK control */
+/* CLK control */
 void LFXO_Init();
+void HFXO_Init();
 
 
 /* UART baud rate macros */
