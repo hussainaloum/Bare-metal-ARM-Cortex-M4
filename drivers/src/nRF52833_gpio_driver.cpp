@@ -15,7 +15,7 @@ void GPIO_Init(GPIO_Handle_t *GPIOHandle, uint8_t PinNumber)
     //2- Connect or disconnect input buffer (default Disconnect)
     if(GPIOHandle->GPIO_PinConfig.pin_input_buff == GPIO_INPUT_CONN)
     {
-        GPIOHandle->pGPIOPx->PIN_CNF[PinNumber] |= (GPIO_INPUT_CONN << GPIO_PIN_CNF_INPUT_BIT_POS);
+        GPIOHandle->pGPIOPx->PIN_CNF[PinNumber] &= ~(!GPIO_INPUT_CONN << GPIO_PIN_CNF_INPUT_BIT_POS);
     }
     else
     {
@@ -33,13 +33,13 @@ void GPIO_Init(GPIO_Handle_t *GPIOHandle, uint8_t PinNumber)
     }
     else
     {
-        GPIOHandle->pGPIOPx->PIN_CNF[PinNumber] |= (GPIO_NO_PUPD << GPIO_PIN_CNF_PULL_BIT_POS);
+        GPIOHandle->pGPIOPx->PIN_CNF[PinNumber] &= ~(!GPIO_NO_PUPD << GPIO_PIN_CNF_PULL_BIT_POS);
     }
 
     //4- Drive configuration            (Add the other drive methods when needed)
     if(GPIOHandle->GPIO_PinConfig.pin_drive == GPIO_DRIVE_S0S1)
     {
-        GPIOHandle->pGPIOPx->PIN_CNF[PinNumber] |= (GPIO_DRIVE_S0S1 << GPIO_PIN_CNF_DRIVE_BIT_POS);
+        GPIOHandle->pGPIOPx->PIN_CNF[PinNumber] &= ~(!GPIO_DRIVE_S0S1 << GPIO_PIN_CNF_DRIVE_BIT_POS);
     }
 
     //5- Configure pin sensing mechanism
@@ -53,7 +53,7 @@ void GPIO_Init(GPIO_Handle_t *GPIOHandle, uint8_t PinNumber)
     }
     else
     {
-        GPIOHandle->pGPIOPx->PIN_CNF[PinNumber] |= (GPIO_SENSE_DIS << GPIO_PIN_CNF_SENSE_BIT_POS);
+        GPIOHandle->pGPIOPx->PIN_CNF[PinNumber] &= ~(!GPIO_SENSE_DIS << GPIO_PIN_CNF_SENSE_BIT_POS);
     }
 }
 
