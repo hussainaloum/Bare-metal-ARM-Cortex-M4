@@ -10,6 +10,9 @@
 #define FLASH_BASEADDR      0x00000000U
 #define SRAM_BASEADDR       0x20000000U
 
+/* Base address of System timer registers (SysTick) */
+#define SYSTICK_BASEADDR	0xE000E010U
+
 /* Base addresses of APB and AHB Bus Peripherals */
 #define APB_BASEADDR        0x40000000U
 #define AHB_BASEADDR        0x50000000U
@@ -20,10 +23,27 @@
 #define CLOCK_BASEADDR      APB_BASEADDR
 #define UART_BASEADDR       (APB_BASEADDR + 0x2000)
 
+/**
+ * **********************************************************************
+ *	Cortex-M4 Peripheral register definitions structures
+ * **********************************************************************
+*/
+
+/**
+ * System timer register (SysTick) definitions
+*/
+typedef struct
+{
+	__VO	uint32_t SYST_CSR;					//SysTick Control and Status Register, SYST_CSR
+	__VO	uint32_t SYST_RVR;					//SysTick Reload Value Register, SYST_RVR on page B3-678
+	__VO	uint32_t SYST_CVR;					//SysTick Current Value Register, SYST_CVR on page B3-678
+	__VO	uint32_t SYST_CALIB;				//SysTick Calibration value Register, SYST_CALIB on page B3-679
+	__VOC	uint32_t RESERVERD[56];
+}SysTick_RegDef_t;
 
 /**
  * **********************************************************************
- *                      Peripheral register definitions
+ *	nRF52833 Peripheral register definitions structures
  * **********************************************************************
 */
 
@@ -142,10 +162,16 @@ typedef struct
 	__VO    uint32_t CONFIG;                    //Configuration of parity and hardware flow control
 }UART_RegDef_t;
 
+/**
+ * **********************************************************************
+ *	Crotex-M4 Peripheral register definitions
+ * **********************************************************************
+*/
+#define SYSTICK			((SysTick_RegDef_t *)SYSTICK_BASEADDR)
 
 /**
  * **********************************************************************
- *                      Peripheral register definitions
+ *	nRF52833 Peripheral register definitions
  * **********************************************************************
 */
 
@@ -169,10 +195,16 @@ typedef struct
 #define GPIO_PIN_CNF_DRIVE_BIT_POS          8
 #define GPIO_PIN_CNF_SENSE_BIT_POS          16
 
-/* UART bit postions */
+/* UART bit positions */
 #define UART_CONFIG_HWFC_BIT_POS            0
 #define UART_CONFIG_PARITY_BIT_POS          1
 #define UART_CONFIG_STOP_BIT_POS            4
 #define UART_CONFIG_PARITYTYPE_BIT_POS      8
+
+/* SysTick bit positions */
+#define SYST_CSR_ENABLE_BIT_POS				0
+#define SYST_CSR_TICKINT_BIT_POS			1
+#define SYST_CSR_CLKSOURCE_BIT_POS			2
+#define SYST_CSR_COUNTFLAG_BIT_POS			16
 
 #endif  /* NRF52833_H */

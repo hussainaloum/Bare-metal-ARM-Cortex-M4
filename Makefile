@@ -28,7 +28,7 @@ LDFLAGS_SH= -mcpu=$(MACH) -mthumb -mfloat-abi=soft --specs=rdimon.specs -T nRF52
 #	rdimon.specs is passed when using system calls, and here semihosting was used
 
 #Makefile rules are below
-all:main.o nRF52833_startup.o syscalls.o nRF52833_gpio_driver.o nRF52833_uart_driver.o final.elf
+all:main.o nRF52833_startup.o syscalls.o nRF52833_gpio_driver.o nRF52833_uart_driver.o SysTick.o final.elf
 
 semihosting:main.o nRF52833_startup.o syscalls.o final_sh.elf
 
@@ -46,8 +46,11 @@ nRF52833_gpio_driver.o:drivers/src/nRF52833_gpio_driver.cpp
 
 nRF52833_uart_driver.o:drivers/src/nRF52833_uart_driver.cpp
 	$(CXX) $(CXXFLAGS) -o $@ $^
+
+SysTick.o:drivers/src/SysTick.cpp
+	$(CXX) $(CXXFLAGS) -o $@ $^
 	
-final.elf: main.o nRF52833_startup.o syscalls.o nRF52833_gpio_driver.o nRF52833_uart_driver.o
+final.elf: main.o nRF52833_startup.o syscalls.o nRF52833_gpio_driver.o nRF52833_uart_driver.o SysTick.o
 	$(CXX) $(LDFLAGS) -o $@ $^
 	
 final_sh.elf: main.o nRF52833_startup.o
