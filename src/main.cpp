@@ -15,6 +15,7 @@
 
 #include "nRF52833_gpio_driver.h"
 #include "nRF52833_uart_driver.h"
+#include "SysTick.h"
 #include <cstring>												//for strlen();
 
 
@@ -23,6 +24,15 @@ char data2[] = "Second message";
 
 int main()
 {
+	//initialize high frequency external oscillator
+	HFXO_Init();												/* If LFXO is used make sure to include a delay
+																long enough after each SendData command.		
+																take a look at Electrical specs in the UART 
+																section in the datasheet					*/
+
+	//Initialize System timer (SysTick)
+	SysTick_Init();
+
     //Create a GPIO Handle
     GPIO_Handle_t GPIOHandle_IN;
 
@@ -33,7 +43,7 @@ int main()
     GPIOHandle_IN.GPIO_PinConfig.pin_input_buff = GPIO_INPUT_CONN;
     GPIOHandle_IN.GPIO_PinConfig.pin_pupd = GPIO_PU;
     GPIOHandle_IN.GPIO_PinConfig.pin_sensing = GPIO_SENSE_LO;
-	GPIOHandle_IN.pGPIOPx->DETECTMODE = 0x01;						//Use the latched LDETECT behavior
+	GPIOHandle_IN.pGPIOPx->DETECTMODE = 0x01;					//Use the latched LDETECT behavior
     
     //Initialize a specific pin in GPIO
     GPIO_Init(&GPIOHandle_IN, 11);
@@ -49,19 +59,17 @@ int main()
 
 	//initialize UART
 	UART_Init(&UARTHandle);
-	//initialize high frequency external oscillator
-	HFXO_Init();												/* If LFXO is used make sure to include a delay
-																	long enough after each SendData command.		
-																	take a look at Electrical specs in the UART 
-																	section in the datasheet					*/
 
 	while(1)
 	{
+
 		//if button 1 is pressed
 		if((GPIOHandle_IN.pGPIOPx->IN & (0x01 << 11)) == 0x00)
-		{
+		{	
 			UART_SendData(&UARTHandle, (uint8_t *)data, strlen(data));
+			delay_ms(5);
 			UART_SendData(&UARTHandle, (uint8_t *)data2, strlen(data2));
 		}
+		delay_ms(50);											//Eliminate debouncing
 	}
 }
